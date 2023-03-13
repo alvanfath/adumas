@@ -6,32 +6,61 @@ use App\Models\Admin;
 use App\Models\Pengaduan;
 use App\Models\Masyarakat;
 use Illuminate\Http\Request;
+use App\Models\LogMasyarakat;
+use App\Models\MasyarakatTemp;
 use App\Http\Controllers\Controller;
 
 class DatatableController extends Controller
 {
     public function masyarakatVerif(){
-        $data = Masyarakat::where('status', 'aktif')->get();
-        return datatables()->of($data)
-        ->editColumn('created_at', function($row){
-            return $row->created_at->diffForHumans();
-        })
-        ->make(true);
-    }
-
-    public function masyarakatUnverif(){
-        $data = Masyarakat::where('status', 'inaktif')->get();
+        $data = Masyarakat::get();
         return datatables()->of($data)
         ->editColumn('created_at', function($row){
             return $row->created_at->diffForHumans();
         })
         ->addColumn('action', function($row){
-            $id = $row->id;
-            $output = '<button type="button" onclick="approveUser('.$id.')" class="btn btn-success">Aktifkan akun</button>';
+            $nik = $row->nik;
+            $output = "<button class='btn btn-primary' type='button' onclick='logActivity(".$nik.")'>Lihat aktivitas</button>";
             return $output;
         })
         ->rawColumns(['action'])
         ->make(true);
+    }
+
+    public function masyarakatTemp(){
+        $data = MasyarakatTemp::get();
+        $verif = Masyarakat::pluck('nik');
+        return datatables()->of($data)
+        ->addColumn('verif', function($row) use($verif){
+            foreach ($verif as $item) {
+                if ($item == $row->nik) {
+                    return '<span class="badge bg-success rounded-pill">Terdaftar</span>';
+                }
+            }
+        })
+        ->addColumn('ttl', function($row){
+            $tempat = $row->tempat_lahir;
+            $tanggal_lahir = date('d F Y' ,strtotime($row->tanggal_lahir));
+            return  $tempat. ', ' . $tanggal_lahir;
+        })
+        ->rawColumns(['verif'])
+        ->make(true);
+    }
+
+    public function activityMasyarakat($nik){
+        $user = Masyarakat::where('nik', $nik)->first();
+        if ($user) {
+            $data = LogMasyarakat::where('masyarakat_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        }else{
+            $data = [];
+        }
+        $output = datatables()->of($data)
+        ->addColumn('time', function($row){
+            $time = date('d F Y', strtotime($row->created_at));
+            return $row->created_at->diffForHumans() . ' - ' . $time;
+        })
+        ->make(true);
+        return $output;
     }
 
     public function pengaduanProgres(){

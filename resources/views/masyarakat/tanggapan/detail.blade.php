@@ -21,9 +21,18 @@
                                 <span><b>{{ date('d F Y', strtotime($data->tgl_pengaduan)) }}</b></span>
                             </div>
                             <div class="form-group d-flex flex-column">
+                                <label for="">Diupload oleh :</label>
+                                <span><b>{{$data->masyarakat->nama}}
+                                @if(Auth::user()->nik == $data->nik)
+                                    (Anda)
+                                @endif</b></span>
+                            </div>
+
+                            <div class="form-group d-flex flex-column">
                                 <label for="isi">Status :</label>
                                 <span class="badge bg-success">{{ ucfirst($data->status) }}</span>
                             </div>
+
                         </div>
                         <div class="col-sm-5 p-5">
                             <div class="form-group d-flex flex-column">
@@ -38,7 +47,7 @@
                                 <label for="isi">Ditanggapi Pada :</label>
                                 <span><b>{{ date('d F Y', strtotime($tanggapan->tgl_tanggapan)) }}</b></span>
                             </div>
-                            <a href="{{route('masyarakat.pengaduan.index')}}" class="float-end btn btn-primary">Kembali</a>
+                            <a href="{{ url()->previous()}}" class="float-end btn btn-primary">Kembali</a>
                         </div>
                     </div>
                 </div>

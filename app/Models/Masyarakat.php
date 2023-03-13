@@ -19,11 +19,21 @@ class Masyarakat extends Authenticatable
         'username',
         'password',
         'telp',
-        'status'
+        'jenis_kelamin',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'alamat',
+        'agama',
+        'status_perkawinan',
+        'pekerjaan'
     ];
 
 
     public function pengaduan(){
         return $this->hasMany(Pengaduan::class, 'nik', 'nik');
+    }
+
+    public function log(){
+        return $this->hasMany(LogMasyarakat::class, 'masyarakat_id', 'id');
     }
 }

@@ -1,8 +1,7 @@
 <div class="header-top">
     <div class="container">
         <div class="logo">
-            <a href="#"><img src="{{ asset('assets/images/logo/logo.sv') }}g"
-                    alt="Logo" /></a>
+            <img src="{{asset('img/assets/pemas.png')}}" width="100%" height="30%;" alt="">
         </div>
         <div class="header-top-right">
             <div class="dropdown">
@@ -21,7 +20,10 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end shadow-lg"
                     aria-labelledby="topbarUserDropdown">
-                    <li><a class="dropdown-item" href="#">Akun saya</a></li>
+                    <li>
+                        <a class="dropdown-item" href="{{route('masyarakat.my-profile')}}">Akun saya</a>
+                        <a class="dropdown-item" href="{{route('masyarakat.my-activity')}}">Aktivitas saya</a>
+                    </li>
                     <li>
                         <hr class="dropdown-divider" />
                     </li>

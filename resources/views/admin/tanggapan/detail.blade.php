@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-5">
-                            <img src="{{ asset('img/pengaduan/' . $data->foto) }}" class="rounded" width="100%" height="300px"
+                            <img src="{{ asset('storage/pengaduan/' . $data->foto) }}" class="rounded" width="100%" height="300px"
                                 alt="tidak ada gambar">
                         </div>
                         <div class="col-md-7">
@@ -25,9 +25,9 @@
                                     <label for="tanggapan">Tanggapan Anda :</label>
                                     <textarea name="tanggapan" id="tanggapan" class="form-control" placeholder="Tanggapan anda" rows="8"></textarea>
                                 </div>
-                                <div class="d-flex">
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{route('admin.pengaduan-undone')}}" class="float-end btn btn-secondary">Kembali</a>
                                     <button class="btn btn-primary">Simpan</button>
-                                    <a href="{{route('admin.pengaduan-undone')}}" class="float-end btn btn-primary">Kembali</a>
                                 </div>
                             </form>
                         </div>
@@ -38,3 +38,4 @@
         </div>
     </div>
 @endsection
+

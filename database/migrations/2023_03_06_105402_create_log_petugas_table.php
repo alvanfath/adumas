@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTanggapanTable extends Migration
+class CreateLogPetugasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateTanggapanTable extends Migration
      */
     public function up()
     {
-        Schema::create('tanggapan', function (Blueprint $table) {
-            $table->id('id_tanggapan');
-            $table->string('no_tanggapan')->unique();
-            $table->integer('id_pengaduan');
-            $table->date('tgl_tanggapan');
-            $table->text('tanggapan');
+        Schema::create('log_petugas', function (Blueprint $table) {
+            $table->id();
             $table->integer('id_petugas');
+            $table->string('activity');
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateTanggapanTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tanggapan');
+        Schema::dropIfExists('log_petugas');
     }
 }

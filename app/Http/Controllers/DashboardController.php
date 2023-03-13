@@ -10,7 +10,8 @@ class DashboardController extends Controller
 {
     public function index(){
         $me = Auth::user();
-        $pengaduan = Pengaduan::where('nik', $me->nik)->count();
+        $pengaduan = Pengaduan::with('masyarakat')->orderBy('tgl_pengaduan', 'DESC')->get();
+
         return view('masyarakat.dashboard', compact('me', 'pengaduan'));
     }
 

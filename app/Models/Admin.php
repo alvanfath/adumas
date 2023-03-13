@@ -24,4 +24,8 @@ class Admin extends Authenticatable
     public function tanggapan(){
         return $this->hasMany(Tanggapan::class, 'id_petugas', 'id_petugas');
     }
+
+    public function log(){
+        return $this->hasMany(LogPetugas::class, 'id_petugas', 'id_petugas');
+    }
 }

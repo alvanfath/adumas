@@ -8,6 +8,8 @@ use App\Models\Tanggapan;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use App\Http\Controllers\LogMasyarakatController;
 
 class PengaduanController extends Controller
 {
@@ -20,7 +22,7 @@ class PengaduanController extends Controller
         $data = Pengaduan::where('nik', Auth::user()->nik)->orderBy('status', 'desc')->get();
         return datatables()->of($data)
         ->editColumn('foto', function($row){
-            $foto = asset("img/pengaduan/{$row->foto}");
+            $foto = asset("storage/pengaduan/{$row->foto}");
             $output = '<img class="rounded" style="width:70%; height:100px;" src="'.$foto.'">';
             return $output;
         })
@@ -61,7 +63,7 @@ class PengaduanController extends Controller
         $code = $this->pengaduanCode();
         if ($request->hasFile('gambar')) {
             $file_name = time() . '_' . $request->gambar->getClientOriginalName();
-            $request->gambar->move(public_path('img/pengaduan'), $file_name);
+            $request->gambar->move(public_path('storage/pengaduan'), $file_name);
             Pengaduan::insert([
                 'no_pengaduan' => $code,
                 'nik' => Auth::user()->nik,
@@ -69,13 +71,16 @@ class PengaduanController extends Controller
                 'isi_laporan' => $request->isi_laporan,
                 'foto' => $file_name
             ]);
+            $log = new LogMasyarakatController();
+            $activity = 'Membuat pengaduan';
+            $log->activity($activity);
 
             return redirect()->route('masyarakat.pengaduan.index')->with('success' , 'Berhasil mengupload pengaduan');
         }
     }
 
     public function tanggapanDetail($no_pengaduan){
-        $data = Pengaduan::with('masyarakat')->where('no_pengaduan', $no_pengaduan)->where('nik', Auth::user()->nik)->firstOrFail();
+        $data = Pengaduan::with('masyarakat')->where('no_pengaduan', $no_pengaduan)->firstOrFail();
         if ($data->status == 'selesai') {
             $tanggapan = Tanggapan::with('petugas')->where('id_pengaduan', $data->id_pengaduan)->first();
             return view('masyarakat.tanggapan.detail', compact('data', 'tanggapan'));
@@ -88,7 +93,14 @@ class PengaduanController extends Controller
         $data = Pengaduan::where('no_pengaduan', $no_pengaduan)->where('nik', Auth::user()->nik)->first();
         if ($data) {
             if ($data->status == 'proses') {
+                $path = public_path("storage/pengaduan/{$data->foto}");
+                if (File::exists($path)) {
+                    File::delete($path);
+                }
                 $data->delete();
+                $log = new LogMasyarakatController();
+                $activity = 'Menghapus pengaduan';
+                $log->activity($activity);
                 return [
                     'statusCode' => 200,
                     'message' => 'Pengaduan berhasil dihapus'
@@ -99,11 +111,11 @@ class PengaduanController extends Controller
                     'message' => 'Pengaduan tidak bisa dihapus karna telah ditanggapi'
                 ];
             }
-        }else{
-            return [
-                'statusCode' => 404,
-                'message' => 'Data pengaduan tidak ditemukan'
-            ];
+            }else{
+                return [
+                    'statusCode' => 404,
+                    'message' => 'Data pengaduan tidak ditemukan'
+                ];
         }
     }
 

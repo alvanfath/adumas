@@ -54,4 +54,10 @@ class PengaduanController extends Controller
         }
         return $str;
     }
+
+    public function printDetail($id){
+        $data = Pengaduan::with('masyarakat')->where('no_pengaduan', $id)->firstOrFail();
+        $tanggapan = Tanggapan::with('petugas')->where('id_pengaduan', $data->id_pengaduan)->first();
+        return view('admin.tanggapan.print', compact('data', 'tanggapan'));
+    }
 }

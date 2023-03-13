@@ -21,6 +21,6 @@ class CekLevel
             return $next($request);
         }
 
-        return redirect()->back()->withErrors('Level mu tidak mencukupi');
+        return redirect()->back()->with('error','Level mu tidak mencukupi');
     }
 }

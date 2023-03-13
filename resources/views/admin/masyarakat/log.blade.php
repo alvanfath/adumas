@@ -1,26 +1,22 @@
 @extends('_layouts.admin')
-@section('page_title', 'Masyarakat')
+@section('page_title')
+    Aktivitas Login {{$masyarakat->nama}}
+@endsection
 @section('content')
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Data Masyarakat</h5>
+                    <h4>Data Aktivitas</h4>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table" id="data-table">
-                            <thead>
-                                <th>Nik</th>
-                                <th>Nama</th>
-                                <th>Nomor telepon</th>
-                                <th>Registrasi pada</th>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-
+                    <table class="table" id="data-table">
+                        <thead>
+                            <th>Aktivitas</th>
+                            <th>Waktu</th>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -28,33 +24,27 @@
 @endsection
 @section('js')
     <script>
-        $(document).ready(function() {
-            initiateDatatable();
+        $(document).ready(function(){
+            var nik = '{{$nik}}';
+            initiateDatatable(nik);
         })
 
-        function initiateDatatable() {
+        function initiateDatatable(nik) {
+            var url = '{{route('admin.get-log', ':nik')}}';
             $('#data-table').DataTable({
                 processing: true,
                 responsive: true,
                 serverSide: true,
                 autoWidth: false,
                 ordering: false,
-                ajax: '{{ route('admin.get-verif') }}',
-                columns: [{
-                        data: 'nik'
+                ajax: url.replace(':nik', nik),
+                columns: [
+                    {
+                        data: 'activity'
                     },
                     {
-                        data: 'nama'
+                        data: 'time'
                     },
-                    {
-                        data: 'telp'
-                    },
-                    {
-                        data: 'created_at'
-                    },
-                    {
-                        data: 'action'
-                    }
                 ],
                 language: {
                     search: "_INPUT_",
@@ -70,11 +60,6 @@
                     }
                 },
             })
-        }
-
-        function logActivity(nik){
-            var url = '{{route('admin.masyarakat.log', ':nik')}}';
-            window.location = url.replace(':nik', nik);
         }
     </script>
 @endsection

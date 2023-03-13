@@ -1,5 +1,4 @@
-@extends('_layouts.admin')
-@section('page_title', 'Halaman Profil')
+@extends('_layouts.app')
 @section('css')
     <style>
         input::-webkit-outer-spin-button,
@@ -15,45 +14,37 @@
     </style>
 @endsection
 @section('content')
+    <div class="page-heading">
+        <h3>Profil Saya</h3>
+    </div>
     <div class="row">
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-header">
-                    <h3>Form profil saya</h3>
+                    <h4>Form Profil</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.update-profile') }}" method="post">
+                    <form action="{{ route('masyarakat.update-profile') }}" method="post">
                         @csrf
                         @method('put')
                         <div class="form-group">
-                            <label for="">Nama lengkap</label>
-                            <input type="text"
-                                class="form-control @error('nama_petugas')
-                            is-invalid
-                            @enderror"
-                                value="{{ $me->nama_petugas }}" name="nama_petugas">
-                            @error('nama_petugas')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                        <div class="form-group">
-                            <label for="">Username</label>
+                            <label for="username">Username :</label>
                             <input type="text"
                                 class="form-control @error('username')
                             is-invalid
                             @enderror"
-                                value="{{ $me->username }}" name="username">
+                                name="username" value="{{ $me->username }}" id="username">
                             @error('username')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="">Telepon</label>
+                            <label for="telp">Nomor telepon :</label>
                             <input type="number"
                                 class="form-control @error('telp')
                             is-invalid
                             @enderror"
-                                value="{{ $me->telp }}" name="telp">
+                                name="telp" value="{{ $me->telp }}" id="telp">
                             @error('telp')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -66,10 +57,10 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-header">
-                    <h3>Form Ubah Password</h3>
+                    <h4>Form Ubah Password</h4>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.update-password') }}" method="post">
+                    <form action="{{ route('masyarakat.update-password') }}" method="post">
                         @csrf
                         @method('put')
                         <div class="form-group">
@@ -107,6 +98,55 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Konfirmasi</button>
                     </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Data Diri</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="d-flex flex-column">
+                                <span><b>NIK</b></span>
+                                <small>{{ $me->nik }}</small>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span><b>Nama Lengkap</b></span>
+                                <small>{{ $me->nama }}</small>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span><b>Jenis Kelamin</b></span>
+                                <small>{{ $me->jenis_kelamin }}</small>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span><b>Tempat, Tanggal lahir</b></span>
+                                <small>{{ $me->tempat_lahir }}, {{ date('d F Y', strtotime($me->tanggal_lahir)) }}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex flex-column">
+                                <span><b>Alamat</b></span>
+                                <small>{{ $me->alamat }}</small>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span><b>Agama</b></span>
+                                <small>{{ $me->agama }}</small>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span><b>Status Perkawinan</b></span>
+                                <small>{{ $me->status_perkawinan }}</small>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <span><b>Pekerjaan</b></span>
+                                <small>{{ $me->pekerjaan }}</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

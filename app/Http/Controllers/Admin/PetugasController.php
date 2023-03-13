@@ -24,7 +24,7 @@ class PetugasController extends Controller
             'telp' => 'required|numeric'
         ]);
 
-        Admin::insert([
+        Admin::create([
             'nama_petugas' => $request->nama_petugas,
             'username' => $request->username,
             'password' => Hash::make($request->password),

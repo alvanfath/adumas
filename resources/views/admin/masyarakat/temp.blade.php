@@ -13,14 +13,18 @@
                             <thead>
                                 <th>Nik</th>
                                 <th>Nama</th>
-                                <th>Nomor telepon</th>
-                                <th>Registrasi pada</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Tempat, Tanggal lahir</th>
+                                <th>Alamat</th>
+                                <th>Agama</th>
+                                <th>Status Perkawinan</th>
+                                <th>Pekerjaan</th>
+                                <th>Status</th>
                             </thead>
                             <tbody>
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -39,7 +43,7 @@
                 serverSide: true,
                 autoWidth: false,
                 ordering: false,
-                ajax: '{{ route('admin.get-verif') }}',
+                ajax: '{{ route('admin.get-masyarakat-temp') }}',
                 columns: [{
                         data: 'nik'
                     },
@@ -47,13 +51,26 @@
                         data: 'nama'
                     },
                     {
-                        data: 'telp'
+                        data: 'jenis_kelamin'
                     },
                     {
-                        data: 'created_at'
+                        data: 'ttl'
                     },
                     {
-                        data: 'action'
+                        data: 'alamat'
+                    },
+                    {
+                        data: 'agama'
+                    },
+                    {
+                        data: 'status_perkawinan'
+                    },
+                    {
+                        data: 'pekerjaan'
+                    },
+                    {
+                        data: 'verif',
+                        defaultContent : '-'
                     }
                 ],
                 language: {
@@ -70,11 +87,6 @@
                     }
                 },
             })
-        }
-
-        function logActivity(nik){
-            var url = '{{route('admin.masyarakat.log', ':nik')}}';
-            window.location = url.replace(':nik', nik);
         }
     </script>
 @endsection
